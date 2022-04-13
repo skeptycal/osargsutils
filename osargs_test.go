@@ -1,4 +1,4 @@
-package osargsutils
+package osargs
 
 import "testing"
 

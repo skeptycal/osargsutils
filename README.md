@@ -1,10 +1,10 @@
-# errorlogger
+# osargs
 
 > Tricky and fun utilities for Go programs.
 
 ---
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/skeptycal/errorlogger/Go) ![Codecov](https://img.shields.io/codecov/c/github/skeptycal/errorlogger)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/skeptycal/osargs/Go) ![Codecov](https://img.shields.io/codecov/c/github/skeptycal/osargs)
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)
 
@@ -29,16 +29,16 @@ Developed with Go 1.16.4. Updated to Go 1.18. Go is _extremely_ backwards compat
 To download the repo and use it as a dependency in your module:
 
 ```bash
-$ go get github.com/skeptycal/errorlogger
+$ go get github.com/skeptycal/osargs
 ```
 
 To build and install this package as a utility (if it has a main package) on your machine so you can use it from the command line:
 
 ```bash
 
-$ gh repo clone skeptycal/errorlogger
+$ gh repo clone skeptycal/osargs
 
-$ cd errorlogger
+$ cd osargs
 
 # test results and coverage info
 $ ./go.test.sh
@@ -55,7 +55,7 @@ $ go install
 To use this repo as a template for your own project:
 
 ```sh
-$ gh repo create -y --public --template "https://github.com/skeptycal/errorlogger"
+$ gh repo create -y --public --template "https://github.com/skeptycal/osargs"
 ```
 
 ### Contributing
@@ -63,9 +63,9 @@ $ gh repo create -y --public --template "https://github.com/skeptycal/errorlogge
 To clone this repo to test and contribute, use `git clone` or `gh repo clone`.
 
 ```sh
-$ gh repo clone skeptycal/errorlogger
+$ gh repo clone skeptycal/osargs
 
-$ cd errorlogger
+$ cd osargs
 
 # or choose a name or issue you wish
 $ git branch -b dev
@@ -78,15 +78,15 @@ Use the [Issues][issues] and [PR][pr] templates on the GitHub repo page to contr
 
 ### Basic Usage
 
-> This is a copy of the example script available in the `cmd/example/errorlogger` folder:
+> This is a copy of the example script available in the `cmd/example/osargs` folder:
 
 ```go
 package main
 
-import "github.com/skeptycal/errorlogger"
+import "github.com/skeptycal/osargs"
 
 func main() {
-    errorlogger.Example()
+    osargs.Example()
 }
 
 ```
@@ -95,7 +95,7 @@ To try it out:
 
 ```sh
 # change to the sample folder
-$ cd cmd/example/errorlogger
+$ cd cmd/example/osargs
 
 # run the main.go program
 $ go run ./main.go
@@ -136,5 +136,5 @@ Licensed under the MIT <https://opensource.org/licenses/MIT> - see the [LICENSE]
 [github]: (https://github.com/skeptycal)
 [campoy]: (https://github.com/campoy)
 [fatih]: (https://github.com/fatih/color)
-[issues]: (https://github.com/skeptycal/errorlogger/issues)
-[pr]: (https://github.com/skeptycal/errorlogger/pulls)
+[issues]: (https://github.com/skeptycal/osargs/issues)
+[pr]: (https://github.com/skeptycal/osargs/pulls)

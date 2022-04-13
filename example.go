@@ -2,12 +2,19 @@
 // https://github.com/skeptycal
 // MIT License
 
-package errorlogger
+package osargs
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 func Example() {
-	exampleLog := New()
-	exampleLog.Info("Example log info message...")
-	fmt.Println("Example import acknowledgement from package errorlogger")
+	here, me, err := HereMe()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Example import acknowledgement from package osargs")
+	fmt.Println("The program name is: ", me)
+	fmt.Println("The program path is: ", here)
 }

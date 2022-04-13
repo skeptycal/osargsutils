@@ -1,3 +1,3 @@
-module github.com/skeptycal/gorepos/osargsutils
+module github.com/skeptycal/gorepos/osargs
 
 go 1.18
