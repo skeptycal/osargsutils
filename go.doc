@@ -1,7 +1,5 @@
 package osargs // import "github.com/skeptycal/gorepos/osargs"
 
-func Arg0() (string, error)
+var OsArgs arger = osArgs{}.init() ...
 func Example()
-func HereMe() (string, string, error)
-type Arger interface{ ... }
-    var OsArgs Arger = osArgs{}
+func HereMe() (string, string)

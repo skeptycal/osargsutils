@@ -2,22 +2,28 @@ package osargs
 
 import (
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/skeptycal/goutil/repo/errorlogger"
 )
 
-// global OsArgs ready to use.
-var OsArgs Arger = osArgs{}
+var log = errorlogger.New()
 
-func init() {
-	OsArgs.init()
-}
+// global OsArgs shortcuts ready to use.
+var (
+	OsArgs arger = osArgs{}.init()
+	App          = OsArgs.App()
+	Args         = OsArgs.Args()
+	Me           = OsArgs.Base()
+	Here         = OsArgs.Dir()
+)
 
-type Arger interface {
+type arger interface {
 	App() string
-	Dir() string
 	Args() []string
+	ArgString() string
+	Dir() string
 	Base() string
 }
 
@@ -34,102 +40,84 @@ type osArgs struct {
 	dir  string
 }
 
-func (a *osArgs) App() string {
-
+func (o osArgs) init() osArgs {
+	_ = o.App()
+	_ = o.Args()
+	_ = o.Base()
+	_ = o.Dir()
+	return o
 }
 
-func (o osArgs) zero() string {
+// App returns the absolute path name for the executable
+// that started the current process. EvalSymlinks is run
+// on the resulting path to provide a stable result.
+func (o osArgs) App() string {
 	if o.app == "" {
-		o.app = os.Args[0]
+		a, err := arg0()
+		if err != nil {
+			log.Errorf("could not determine command line app (os.args[0]): %v", err)
+		}
+		o.app = a
 	}
 	return o.app
 }
 
+// Args returns the command line arguments as
+// a slice of strings.
 func (o osArgs) Args() []string {
 	if len(o.args) == 0 {
-		switch len(os.Args) {
-		case 0:
-			panic("os.Args was returned as zero length.")
-		case 1:
-			o.args = []string{""}
-		default:
-			o.args = os.Args[1:]
-		}
+		o.args = args()
 	}
 	return o.args
 }
 
-func (o osArgs) ArgString(args ...string) string {
+// ArgString returns the command line arguments as
+// a single space delimited string.
+func (o osArgs) ArgString() string {
 	return strings.Join(o.Args(), " ")
 }
 
-func (o osArgs) abs() (string, error) {
-	s, err := filepath.Abs(o.App())
-	if err != nil {
-		return s, err
+func (o osArgs) Base() string {
+	if o.base == "" {
+		o.base = filepath.Base(o.App())
 	}
-	o.app = s
-	return o.app, nil
+	return o.base
 }
 
-// Arg0 returns the absolute path name for the executable that started the
-// current process. EvalSymlinks is run on the resulting path to provide a
-// stable result.
-func Arg0() (string, error) {
-	// As of Go 1.8 (Released February 2017) the recommended
-	// way of doing this is with os.Executable.
-	return zeroOsExecutable()
+func (o osArgs) Dir() string {
+	if o.dir == "" {
+		o.dir = filepath.Dir(o.App())
+	}
+	return o.dir
 }
 
-func HereMe() (string, string, error) {
-	// hereMe returns the folder (here) and basename (me) of
-	// the executable that started the current process.
-	return hereMe()
-}
-
-// hereMe returns the folder (here) and basename (me) of
+// HereMe returns the folder (here) and basename (me) of
 // the executable that started the current process.
-func hereMe() (string, string, error) {
-	// As of Go 1.8 (Released February 2017) the recommended
-	// way of doing this is with os.Executable:
-	zero, err := Arg0()
-	if err != nil {
-		return "", "", err
-	}
+func HereMe() (string, string) { return OsArgs.Dir(), OsArgs.Base() }
 
-	// TODO - using path.Split() returns dir ending
-	// with a slash, where Dir() would not
-	return filepath.Dir(zero), filepath.Base(zero), nil
-}
-
-// hereMe2 returns the folder (here) and basename (me) of
-// the executable that started the current process.
-func hereMe2() (string, string, error) {
-	// As of Go 1.8 (Released February 2017) the recommended
-	// way of doing this is with os.Executable:
-	zero, err := Arg0()
-	if err != nil {
-		return "", "", err
-	}
-
-	// TODO - using path.Split() returns dir ending
-	// with a slash, where Dir() would not
-	dir, base := path.Split(zero)
-	return dir, base, nil
-}
-
-func (o osArgs) zeroOsArgs() (string, error) {
-	// Prior to Go 1.8, you could use os.Args[0]
-	return filepath.EvalSymlinks(os.Args[0])
-}
-
-func zeroOsExecutable() (string, error) {
-	// As of Go 1.8 (Released February 2017) the recommended
-	// way of doing this is with os.Executable:
+// Arg0 returns the absolute path name for the executable
+// that started the current process. EvalSymlinks is run
+// on the resulting path to provide a stable result.
+//
+// As of Go 1.8 (Released February 2017) the recommended
+// way of doing this is with os.Executable. Prior to Go 1.8,
+// and as a backup, os.Args[0] is used.
+func arg0() (string, error) {
 	ex, err := os.Executable()
 	if err != nil {
-		return "", err
+		return filepath.EvalSymlinks(os.Args[0])
 	}
-
 	return filepath.EvalSymlinks(ex)
+}
+
+func args() []string {
+	switch len(os.Args) {
+	case 0:
+		log.Errorf("os.Args was zero length.")
+		return []string{}
+	case 1:
+		return []string{""}
+	default:
+		return os.Args[1:]
+	}
 }
