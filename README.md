@@ -4,7 +4,7 @@
 
 ---
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/skeptycal/osargs/Go) ![Codecov](https://img.shields.io/codecov/c/github/skeptycal/osargs)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/skeptycal/osargsutils/go) ![Codecov](https://img.shields.io/codecov/c/github/skeptycal/osargs)
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)
 
